@@ -946,8 +946,8 @@ class ContiguousAllocationBlockGUI(BlockGUI):
 
     def read(self,vpn):
         # In Contiguous Allocation, each file occupies a contiguous block
-        block_id = vpn // 4  # Divide VPN by 4 to find the block index
-        address_index = vpn % 4  # Modulo to find the address within the block
+        block_id = int(vpn) // 4  # Divide VPN by 4 to find the block index
+        address_index = int(vpn) % 4  # Modulo to find the address within the block
         block = self.blocks[block_id]
         print(f"(From Contiguous Allocation): Contiguous Allocation: Read VPN {vpn} -> Block {block.block_id}, Address {block.addresses[address_index]}")
         return block.addresses[address_index]

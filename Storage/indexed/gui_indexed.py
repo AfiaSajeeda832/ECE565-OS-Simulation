@@ -44,8 +44,8 @@ class IndexedAllocationBlockGUI(BlockGUI):
         self.read_write_label.pack(pady=5)
 
         # File, action, position label
-        self.file_label = tk.Label(self.root, text=f"File: {file_name} | Action: {action_type} | Position : {pos}")
-        self.file_label.pack(pady=5)
+        # self.file_label = tk.Label(self.root, text=f"File: {file_name} | Action: {action_type} | Position : {pos}")
+        # self.file_label.pack(pady=5)
 
         
 
@@ -230,6 +230,7 @@ class IndexedAllocationBlockGUI(BlockGUI):
             # Mark the new block as used
             self.blocks[new_block] = IndexedAllocationBLOCK(file=file_name, next_block=None)
             print(f'(From Indexed Allocation): new block is {new_block}')
+            print(f'(From Indexed Allocation): Reads: {reads}, Writes {writes}')
             messagebox.showinfo("Indexed Allocation GUI", f"Adding New Block at Block {new_block} .")
 
             # Update the GUI with the new block
@@ -262,6 +263,7 @@ class IndexedAllocationBlockGUI(BlockGUI):
 
             # Mark the block as free
             self.blocks[block_to_remove] = None
+            print(f'(From Indexed Allocation): Reads: {reads}, Writes {writes}')
             messagebox.showinfo("Indexed Allocation GUI", f"Removing Block at Block {block_to_remove} .")
 
             # Update the indexed allocation
@@ -311,6 +313,7 @@ class IndexedAllocationBlockGUI(BlockGUI):
             # Increment the write counter
             writes += 1
             self.update_read_write_label()
+            print(f'(From Indexed Allocation): Reads: {reads}, Writes {writes}')
             #self.update_file_label()    
 
     def remove(self,file_name, start, length, position):
@@ -333,6 +336,7 @@ class IndexedAllocationBlockGUI(BlockGUI):
 
             # Mark the block as free
             self.blocks[block_to_remove] = None
+            print(f'(From Indexed Allocation): Reads: {reads}, Writes {writes}')
             messagebox.showinfo("Indexed Allocation GUI", f"Removing Block at Block {block_to_remove} .")
 
             # Update the indexed allocation
@@ -358,7 +362,7 @@ class IndexedAllocationBlockGUI(BlockGUI):
         
         # Update label text with file and next block information
         if block:
-            label.config(text=f"Block {index}\nFile: {block.files or 'None'}\nNext: {block.next_block or 'None'}")
+            label.config(text=f"Block {index}\nFile: {block.files or 'None'}")
             
             if block.is_index_block:  # If the block is an index block, highlight it with a distinct color
                 label.config(bg="light green")  # Highlight index blocks in light green
@@ -367,7 +371,7 @@ class IndexedAllocationBlockGUI(BlockGUI):
             else:
                 label.config(bg="white")  # Reset background if the block is not in use
         else:
-            label.config(text=f"Block {index}\nFile: None\nNext: None")
+            label.config(text=f"Block {index}\nFile: None")
             label.config(bg="white")
 
     def update_gui_blocks(self):
@@ -411,8 +415,8 @@ class IndexedAllocationBlockGUI(BlockGUI):
 
     def read(self,vpn):
         # In Indexed Allocation, use the index block to find the corresponding data block
-        current_block = self.blocks[vpn // 4]  # Determine which file (or block group) the VPN belongs to
-        address_index = vpn % 4  # Determine the address within  block
+        current_block = self.blocks[int(vpn) // 4]  # Determine which file (or block group) the VPN belongs to
+        address_index = int(vpn) % 4  # Determine the address within  block
         #print(f'current_block is {current_block.block_id} and address_index is {address_index}')
         print(f"(From Indexed Allocation): Indexed Allocation: Read VPN {vpn} -> Block {current_block.block_id}, Address {current_block.addresses[address_index]}")
         return current_block.addresses[address_index]

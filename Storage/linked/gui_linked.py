@@ -638,8 +638,8 @@ class LinkedAllocationBlockGUI(BlockGUI):
 
     def read(self,vpn):
         # In Linked Allocation, we traverse the linked list of blocks
-        current_block = self.blocks[vpn // 4]  # Start with the block corresponding to the VPN
-        address_index = vpn % 4  # Modulo to find the address within the block
+        current_block = self.blocks[int(vpn) // 4]  # Start with the block corresponding to the VPN
+        address_index = int(vpn) % 4  # Modulo to find the address within the block
         print(f"(From Linked Allocation): Linked Allocation: Read VPN {vpn} -> Block {current_block.block_id}, Address {current_block.addresses[address_index]}")
         return current_block.addresses[address_index]
     
